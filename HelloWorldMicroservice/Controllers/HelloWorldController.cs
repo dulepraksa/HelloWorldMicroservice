@@ -22,14 +22,16 @@ namespace HelloWorldMicroservice.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            var phrase = Phrases.Get(id);
+            return Ok(phrase);
         }
 
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
+
         }
 
         // PUT api/<controller>/5
