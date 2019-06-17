@@ -4,14 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace HelloWorldMicroservice.Models
+namespace HelloWorldMicroservice.DTO
 {
-    public class Phrase
+    public class PhraseDTO
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        [MinLength(3)]
         public string Body { get; set; }
     }
 }

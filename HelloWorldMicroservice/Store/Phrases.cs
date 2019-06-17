@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Web;
+using HelloWorldMicroservice.DTO;
 
 namespace HelloWorldMicroservice.Store
 {
@@ -84,6 +85,75 @@ namespace HelloWorldMicroservice.Store
                     return phrase;
                 }
 
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        public static bool Delete(int id)
+        {
+            try
+            {
+                using (SqlConnection sqlCon = new SqlConnection(connnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand();
+
+                    cmd.CommandText = "DELETE FROM HelloWorldSchema.phrases WHERE id = @Id";
+
+                    //konverzija tipova iz inta u string
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = id;
+                    cmd.Connection = sqlCon;
+
+                    sqlCon.Open();
+
+                    var rows = Convert.ToInt32(cmd.ExecuteNonQuery());
+
+                    sqlCon.Close();
+
+                    if (rows >= 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        public static bool Store(Phrase p)
+        {
+            try
+            {
+                using (SqlConnection sqlCon = new SqlConnection(connnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand();
+
+                    cmd.CommandText = "INSERT INTO HelloWorldSchema.phrases (body) VALUES(@Body);";
+                    cmd.Parameters.Add("@Body", SqlDbType.VarChar);
+                    cmd.Parameters["@Body"].Value = p.Body;
+                    cmd.Connection = sqlCon;
+
+                    sqlCon.Open();
+                        var rows = cmd.ExecuteNonQuery();
+                    sqlCon.Close();
+                    if(rows >= 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
             }
             catch (Exception e)
             {
