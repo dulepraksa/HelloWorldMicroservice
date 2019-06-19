@@ -129,7 +129,7 @@ namespace HelloWorldMicroservice.Store
                 throw e;
             }
         }
-        public static bool Store(Phrase p)
+        public static Phrase Store(Phrase p)
         {
             try
             {
@@ -137,21 +137,25 @@ namespace HelloWorldMicroservice.Store
                 {
                     SqlCommand cmd = new SqlCommand();
 
-                    cmd.CommandText = "INSERT INTO HelloWorldSchema.phrases (body) VALUES(@Body);";
+                    cmd.CommandText = "INSERT INTO HelloWorldSchema.phrases (body) VALUES(@Body);SELECT SCOPE_IDENTITY()";
                     cmd.Parameters.Add("@Body", SqlDbType.VarChar);
                     cmd.Parameters["@Body"].Value = p.Body;
                     cmd.Connection = sqlCon;
 
                     sqlCon.Open();
-                        var rows = cmd.ExecuteNonQuery();
+                        var row = Convert.ToInt32(cmd.ExecuteScalar());
                     sqlCon.Close();
-                    if(rows >= 1)
+                    if(row > 0)
                     {
-                        return true;
+                        Phrase retP = new Phrase();
+                        retP.Id = row;
+                        retP.Body = p.Body;
+
+                        return retP;
                     }
                     else
                     {
-                        return false;
+                        return null;
                     }
                 }
             }
@@ -160,6 +164,45 @@ namespace HelloWorldMicroservice.Store
 
                 throw e;
             }
+        }
+        public static Phrase Put(Phrase p)
+        {
+            try
+            {
+                using (SqlConnection sqlCon = new SqlConnection(connnectionString))
+                {
+                    SqlCommand cmd = new SqlCommand();
+
+                    cmd.CommandText = "UPDATE HelloWorldSchema.phrases SET body = @Body WHERE id=@Id";
+                    cmd.Parameters.Add("@Id", SqlDbType.Int);
+                    cmd.Parameters["@Id"].Value = p.Id;
+                    cmd.Parameters.Add("@Body", SqlDbType.VarChar);
+                    cmd.Parameters["@Body"].Value = p.Body;
+                    cmd.Connection = sqlCon;
+
+                    sqlCon.Open();
+                    var rows = Convert.ToInt32(cmd.ExecuteNonQuery());
+                    sqlCon.Close();
+                    if (rows > 0)
+                    {
+                        Phrase retP = new Phrase();
+                        retP.Id = p.Id;
+                        retP.Body = p.Body;
+
+                        return retP;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
         }
     }
 }

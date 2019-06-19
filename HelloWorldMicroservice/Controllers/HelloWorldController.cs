@@ -36,20 +36,36 @@ namespace HelloWorldMicroservice.Controllers
             Phrase p = new Phrase();
             p.Body = pdto.Body;
 
-            bool retVal = Phrases.Store(p);
-            if(retVal == true)
+            var retVal = Phrases.Store(p);
+
+            if(retVal != null)
             {
-                return Content(HttpStatusCode.Created, 201);
+                return Ok(retVal);
             }
             else
             {
-                return Content(HttpStatusCode.InternalServerError,500);
+                return BadRequest("Record could not be created");
             }
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, PhraseDTO pdto)
         {
+            Phrase p = new Phrase();
+
+            p.Id = id;
+            p.Body = pdto.Body;
+
+            Phrase retVal = Phrases.Put(p);
+
+            if(retVal != null)
+            {
+                return Ok(retVal);
+            }
+            else
+            {
+                return BadRequest("Record could not be updated");
+            }
         }
 
         // DELETE api/<controller>/5
