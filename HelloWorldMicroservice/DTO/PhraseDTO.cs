@@ -9,5 +9,6 @@ namespace HelloWorldMicroservice.DTO
     public class PhraseDTO
     {
         public string Body { get; set; }
+        public bool Editing { get; set; }
     }
 }

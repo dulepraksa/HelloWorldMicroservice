@@ -13,5 +13,6 @@ namespace HelloWorldMicroservice.Models
         [Required]
         [MinLength(3)]
         public string Body { get; set; }
+        public bool Editing { get; set; }
     }
 }
