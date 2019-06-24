@@ -37,7 +37,6 @@ namespace HelloWorldMicroservice.Store
 
                         p.Id = reader.GetInt32(reader.GetOrdinal("id"));
                         p.Body = reader.GetString(reader.GetOrdinal("body"));
-                        p.Editing = reader.GetBoolean(reader.GetOrdinal("editing"));
 
                         phrases.Add(p);
                     }
@@ -79,7 +78,6 @@ namespace HelloWorldMicroservice.Store
                     {
                         phrase.Id = reader.GetInt32(reader.GetOrdinal("id"));
                         phrase.Body = reader.GetString(reader.GetOrdinal("body"));
-                        phrase.Editing = reader.GetBoolean(reader.GetOrdinal("editing"));
                     }
 
                     sqlCon.Close();
@@ -175,12 +173,11 @@ namespace HelloWorldMicroservice.Store
                 {
                     SqlCommand cmd = new SqlCommand();
 
-                    cmd.CommandText = "UPDATE HelloWorldSchema.phrases SET body = @Body editing = @Editing WHERE id=@Id";
+                    cmd.CommandText = "UPDATE HelloWorldSchema.phrases SET body = @Body WHERE id=@Id";
                     cmd.Parameters.Add("@Id", SqlDbType.Int);
                     cmd.Parameters["@Id"].Value = p.Id;
                     cmd.Parameters.Add("@Body", SqlDbType.VarChar);
                     cmd.Parameters["@Body"].Value = p.Body;
-                    cmd.Parameters["@Editing"].Value = p.Editing;
                     cmd.Connection = sqlCon;
 
                     sqlCon.Open();
@@ -191,7 +188,6 @@ namespace HelloWorldMicroservice.Store
                         Phrase retP = new Phrase();
                         retP.Id = p.Id;
                         retP.Body = p.Body;
-                        retP.Editing = p.Editing;
 
                         return retP;
                     }

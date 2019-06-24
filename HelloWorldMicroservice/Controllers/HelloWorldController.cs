@@ -35,7 +35,6 @@ namespace HelloWorldMicroservice.Controllers
         {
             Phrase p = new Phrase();
             p.Body = pdto.Body;
-            p.Editing = pdto.Editing;
 
             var retVal = Phrases.Store(p);
 
@@ -56,7 +55,6 @@ namespace HelloWorldMicroservice.Controllers
 
             p.Id = id;
             p.Body = pdto.Body;
-            p.Editing = pdto.Editing;
 
             Phrase retVal = Phrases.Put(p);
 
@@ -82,8 +80,7 @@ namespace HelloWorldMicroservice.Controllers
             {
                 return Content(HttpStatusCode.NotFound, 404);
             }
-
-
         }
+
     }
 }
